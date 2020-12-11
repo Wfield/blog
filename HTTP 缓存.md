@@ -1,0 +1,58 @@
+所有关于缓存资源的问题，都仅仅针对`GET`请求。而对于`POST`, `DELETE`, `PUT`这类行为性操作通常不做任何缓存
+
+## 缓存策略：
+
+### 强缓存：无须验证的缓存策略
+响应头中有 Expires/Cache-Control 两个字段
+Expire：http1.0 的标准
+Cache-Control：http1.1 的标准
+两个同时存在时是 Cache-Control 的优先级更高
+
+**Expire：**指缓存过期的**具体时间**，超过了这个时间点就代表资源过期。如果时间表示出错或者没有转换到正确的时区都可能造成缓存生命周期出错
+
+**Cache-Control：**可以由多个字段组合而成，主要有以下几个取值：
+- cache-control：max-age（单位为s）
+
+> 指定设置缓存最大的有效时间，定义的是时间长短。当浏览器向服务器发送请求后，在max-age这段时间里浏览器就不会再向服务器发送请求了。 状态码 200
+
+- cache-control：public
+
+> 指定响应可以在代理缓存中被缓存，于是可以被多用户共享。如果没有明确指定private，则默认为public。
+
+- cache-control:  private
+
+> 响应只能在私有缓存中被缓存，不能放在代理缓存上。对一些用户信息敏感的资源，通常需要设置为private。
+
+- cache-control:  no-cache
+
+> 表示必须先与服务器确认资源是否被更改过（依靠If-None-Match和Etag），然后再决定是否使用本地缓存。
+>
+> etag：是返回资源是服务器返回到浏览器，同时服务器保留这个 etag
+>
+> if-none-match：是浏览器发生给服务器，文件没有被修改，值就和 etag 相同
+>
+> 在服务器比较 etag 和 浏览器传来的 if-none-match，如果一则表示文件没有被修改，返回状态码 304
+
+- cache-control:  no-store
+
+> 绝对禁止缓存任何资源，也就是说每次用户请求资源时，都会向服务器发送一个请求，每次都会下载完整的资源。通常用于机密性资源。
+
+### 协商缓存
+- Last-modified/If-Modified-Since
+  Last-modified：服务器端资源的最后修改时间，响应头带回；
+  If-Modified-Since：从 Last-modified 取值，请求头字段；服务器将此字段和资源最后修改时间比较
+
+- Etag/If-None-Match
+  Etag：服务器端资源生成的 hash 字符串，响应头带回；
+  If-None-Match：从 Etag 取值，请求头字段；服务器比较此字段和资源生成的 hash 值，返回 200 或 304
+
+### last-modified 和 Etag 区别
+- Last-modified 只能精确到秒
+- 一些资源的最后修改时间改变了，但是内容没改变，使用 Last-modified 看不出内容没有改变。
+- Etag 的精度比 Last-modified 高，属于强验证，要求资源字节级别的一致，优先级高。如果服务器端有提供 ETag 的话，必须先对 ETag 进行 Conditional Request。
+
+
+**注意**：实际使用 ETag/Last-modified 要注意保持一致性，做负载均衡和反向代理的话可能会出现不一致的情况。计算 ETag 也是需要占用资源的，如果修改不是过于频繁，看自己的需求用 Cache-Control 是否可以满足。
+
+
+参考：https://zhuanlan.zhihu.com/p/29750583

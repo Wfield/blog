@@ -1,0 +1,236 @@
+prototype： 给其它对象提供共享属性的对象
+`__proto__`: 对象访问其原型（共享属性的对象）的隐式调用
+> 在 ES6 中可以通过 Object.getPrototypeOf 和 Object.setPrototypeOf 访问和设置院校
+
+### 对象的 `__proto__` 值：
+  - 对于使用对象字面量创建的对象，这个值是 [`Object.prototype`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/prototype)
+- 对于使用数组字面量创建的对象，这个值是 [`Array.prototype`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/prototype)
+- 对于functions，这个值是[`Function.prototype`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Function/prototype)
+- 对于 js 提供的内建构造器函数（[Array](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Array), [Boolean](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Boolean), [Date](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Date), [Number](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Number), [Object](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object), [String](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/String) 等等)，这个值总是 fun.prototype （fun 为js 提供的内建构造器函数） **内置对象的 prototype 都不是纯对象，比如 Date.prototype 是 Date，Set.prototype 是 Set**
+   ```
+  Function.prototype //  ƒ () { [native code] }
+
+  Array.prototype  // 
+    concat: ƒ concat()
+    constructor: ƒ Array()
+    copyWithin: ƒ copyWithin()
+    entries: ƒ entries()
+    every: ƒ every()
+    fill: ƒ fill()
+    filter: ƒ filter()
+    find: ƒ find()
+    findIndex: ƒ findIndex()
+    flat: ƒ flat()
+    flatMap: ƒ flatMap()
+    forEach: ƒ forEach()
+    includes: ƒ includes()
+    indexOf: ƒ indexOf()
+    join: ƒ join()
+    keys: ƒ keys()
+    lastIndexOf: ƒ lastIndexOf()
+    length: 0
+    map: ƒ map()
+    pop: ƒ pop()
+    push: ƒ push()
+    reduce: ƒ reduce()
+    reduceRight: ƒ reduceRight()
+    reverse: ƒ reverse()
+    shift: ƒ shift()
+    slice: ƒ slice()
+    some: ƒ some()
+    sort: ƒ sort()
+    splice: ƒ splice()
+    toLocaleString: ƒ toLocaleString()
+    toString: ƒ toString()
+    unshift: ƒ unshift()
+    values: ƒ values()
+    Symbol(Symbol.iterator): ƒ values()
+    Symbol(Symbol.unscopables): {copyWithin: true, entries: true, fill: true, find: true, findIndex: true, …}
+    __proto__: Object
+
+  Boolean.prototype //
+    constructor: ƒ Boolean()
+    toString: ƒ toString()
+    valueOf: ƒ valueOf()
+    __proto__: Object
+    [[PrimitiveValue]]: false
+
+  Date.prototype  //
+    constructor: ƒ Date()
+    getDate: ƒ getDate()
+    getDay: ƒ getDay()
+    getFullYear: ƒ getFullYear()
+    getHours: ƒ getHours()
+    getMilliseconds: ƒ getMilliseconds()
+    getMinutes: ƒ getMinutes()
+    getMonth: ƒ getMonth()
+    getSeconds: ƒ getSeconds()
+    getTime: ƒ getTime()
+    getTimezoneOffset: ƒ getTimezoneOffset()
+    getUTCDate: ƒ getUTCDate()
+    getUTCDay: ƒ getUTCDay()
+    getUTCFullYear: ƒ getUTCFullYear()
+    getUTCHours: ƒ getUTCHours()
+    getUTCMilliseconds: ƒ getUTCMilliseconds()
+    getUTCMinutes: ƒ getUTCMinutes()
+    getUTCMonth: ƒ getUTCMonth()
+    getUTCSeconds: ƒ getUTCSeconds()
+    getYear: ƒ getYear()
+    setDate: ƒ setDate()
+    setFullYear: ƒ setFullYear()
+    setHours: ƒ setHours()
+    setMilliseconds: ƒ setMilliseconds()
+    setMinutes: ƒ setMinutes()
+    setMonth: ƒ setMonth()
+    setSeconds: ƒ setSeconds()
+    setTime: ƒ setTime()
+    setUTCDate: ƒ setUTCDate()
+    setUTCFullYear: ƒ setUTCFullYear()
+    setUTCHours: ƒ setUTCHours()
+    setUTCMilliseconds: ƒ setUTCMilliseconds()
+    setUTCMinutes: ƒ setUTCMinutes()
+    setUTCMonth: ƒ setUTCMonth()
+    setUTCSeconds: ƒ setUTCSeconds()
+    setYear: ƒ setYear()
+    toDateString: ƒ toDateString()
+    toGMTString: ƒ toUTCString()
+    toISOString: ƒ toISOString()
+    toJSON: ƒ toJSON()
+    toLocaleDateString: ƒ toLocaleDateString()
+    toLocaleString: ƒ toLocaleString()
+    toLocaleTimeString: ƒ toLocaleTimeString()
+    toString: ƒ toString()
+    toTimeString: ƒ toTimeString()
+    toUTCString: ƒ toUTCString()
+    valueOf: ƒ valueOf()
+    Symbol(Symbol.toPrimitive): ƒ [Symbol.toPrimitive]()
+    __proto__: Object
+
+  Number.prototype  //
+    constructor: ƒ Number()
+    toExponential: ƒ toExponential()
+    toFixed: ƒ toFixed()
+    toLocaleString: ƒ toLocaleString()
+    toPrecision: ƒ toPrecision()
+    toString: ƒ toString()
+    valueOf: ƒ valueOf()
+    __proto__: Object
+    [[PrimitiveValue]]: 0
+
+  Object.prototype   // 
+    constructor: ƒ Object()
+    hasOwnProperty: ƒ hasOwnProperty()
+    isPrototypeOf: ƒ isPrototypeOf()
+    propertyIsEnumerable: ƒ propertyIsEnumerable()
+    toLocaleString: ƒ toLocaleString()
+    toString: ƒ toString()
+    valueOf: ƒ valueOf()
+    __defineGetter__: ƒ __defineGetter__()
+    __defineSetter__: ƒ __defineSetter__()
+    __lookupGetter__: ƒ __lookupGetter__()
+    __lookupSetter__: ƒ __lookupSetter__()
+    get __proto__: ƒ __proto__()
+    set __proto__: ƒ __proto__()
+
+  String.prototype  //  
+    anchor: ƒ anchor()
+    big: ƒ big()
+    blink: ƒ blink()
+    bold: ƒ bold()
+    charAt: ƒ charAt()
+    charCodeAt: ƒ charCodeAt()
+    codePointAt: ƒ codePointAt()
+    concat: ƒ concat()
+    constructor: ƒ String()
+    endsWith: ƒ endsWith()
+    fixed: ƒ fixed()
+    fontcolor: ƒ fontcolor()
+    fontsize: ƒ fontsize()
+    includes: ƒ includes()
+    indexOf: ƒ indexOf()
+    italics: ƒ italics()
+    lastIndexOf: ƒ lastIndexOf()
+    length: 0
+    link: ƒ link()
+    localeCompare: ƒ localeCompare()
+    match: ƒ match()
+    matchAll: ƒ matchAll()
+    normalize: ƒ normalize()
+    padEnd: ƒ padEnd()
+    padStart: ƒ padStart()
+    repeat: ƒ repeat()
+    replace: ƒ replace()
+    search: ƒ search()
+    slice: ƒ slice()
+    small: ƒ small()
+    split: ƒ split()
+    startsWith: ƒ startsWith()
+    strike: ƒ strike()
+    sub: ƒ sub()
+    substr: ƒ substr()
+    substring: ƒ substring()
+    sup: ƒ sup()
+    toLocaleLowerCase: ƒ toLocaleLowerCase()
+    toLocaleUpperCase: ƒ toLocaleUpperCase()
+    toLowerCase: ƒ toLowerCase()
+    toString: ƒ toString()
+    toUpperCase: ƒ toUpperCase()
+    trim: ƒ trim()
+    trimEnd: ƒ trimEnd()
+    trimLeft: ƒ trimStart()
+    trimRight: ƒ trimEnd()
+    trimStart: ƒ trimStart()
+    valueOf: ƒ valueOf()
+    Symbol(Symbol.iterator): ƒ [Symbol.iterator]()
+    __proto__: Object
+    [[PrimitiveValue]]: ""
+  ```
+
+### 构造函数的 prototype 的 `__proto__`
+由上面的各个 js 内置的构造函数的 prototype 的打印值可以看到，对于除 Object 和 Function 对象的 prototype 之外，其他的构造函数 String、Date、Boolean、Array 的 prototype 中都有 `_proto__` 属性，且值为 Object；
+**即 String、Date、Boolean、Array 继承自 Object**
+
+### Object 的原型的`__proto__`
+`Object.prototype.__proto__  // null`
+
+### `__proto__` 属性是用于对象访问其原型（共享属性对象）的
+所以对象可以访问 `__proto__`， 对于函数没有 `__proto__` 属性
+但是在 js 中 *在 JavaScript 中，函数是头等 (first-class) 对象，因为它们可以像任何其他对象一样具有属性和方法*
+所以当访问函数的 `__proto__` 属性（原型链) 时
+```
+// 内置构造函数被当作对象访问原型
+Function.__proto__
+ƒ () { [native code] }
+Object.__proto__
+ƒ () { [native code] }
+String.__proto__
+ƒ () { [native code] }
+Number.__proto__
+ƒ () { [native code] }
+Boolean.__proto__
+ƒ () { [native code] }
+Array.__proto__
+ƒ () { [native code] }
+```
+
+### 函数与原型
+**所有函数都有 prototype 属性，它默认是以 Object.prototype 为原型的对象**
+```
+function fn() {}
+fn.prototype.__proto__ === Object.prototype
+fn.prototype 
+// 输出
+  constructor: ƒ fn()
+  __proto__: Object
+```
+所以当创建一个实例时，实例对象即包含构造函数里的属性，也通过原型链，获取原型 Object 中的属性
+```
+function fn() { this.a = 'a'}
+var o = new fn();
+console.log(o);
+// 输出
+{
+  a: "a"
+  __proto__: Object
+}
+```

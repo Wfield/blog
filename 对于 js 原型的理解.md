@@ -212,6 +212,10 @@ Boolean.__proto__
 ƒ () { [native code] }
 Array.__proto__
 ƒ () { [native code] }
+
+function fn() {}
+fn.__proto__
+ƒ () { [native code] }
 ```
 
 ### 函数与原型

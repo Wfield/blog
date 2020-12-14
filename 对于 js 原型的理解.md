@@ -1,6 +1,7 @@
 prototype： 给其它对象提供共享属性的对象
+
 `__proto__`: 对象访问其原型（共享属性的对象）的隐式调用
-> 在 ES6 中可以通过 Object.getPrototypeOf 和 Object.setPrototypeOf 访问和设置院校
+> 在 ES6 中可以通过 Object.getPrototypeOf 和 Object.setPrototypeOf 访问和设置原型
 
 ### 对象的 `__proto__` 值：
   - 对于使用对象字面量创建的对象，这个值是 [`Object.prototype`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/prototype)

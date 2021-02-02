@@ -1,0 +1,538 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0048)https://www.quirksmode.org/mobile/viewports.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>A tale of two viewports — part one</title>
+
+<link rel="stylesheet" href="./A tale of two viewports — part one_files/quirksmode.css">
+<link rel="stylesheet" href="./A tale of two viewports — part one_files/mobiletables.css">
+<script type="text/javascript" src="./A tale of two viewports — part one_files/quirksmode.js.下载"></script><style>body {padding-top: 161px;}</style>
+
+<style>
+
+code {
+	font-size: 120%;
+}
+
+body > img,div#coordinates img {
+	border: 10px solid #cccccc;
+	margin: 15px 0 15px -15px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	max-width: 100%;
+/*	max-width: 200px;
+ 	max-height: 200px; */
+}
+
+</style>
+</head>
+
+<body><div class="pageHeader">
+
+<img src="./A tale of two viewports — part one_files/header_swoosh.gif" alt="">
+
+<div class="specialMessage">
+	<a href="https://www.quirksmode.org/css-coaching.html">Need some CSS coaching? I’m here for you.</a>
+</div>
+
+<div class="mainNav">
+	<a href="https://www.quirksmode.org/js/contents.html">JavaScript archives</a>
+	<a href="https://www.quirksmode.org/compatibility.html">Compatibility</a>
+	<a href="https://www.quirksmode.org/blog/">QuirksBlog</a>
+	<a href="https://www.quirksmode.org/donations.html">Donations</a>
+	<a href="https://www.quirksmode.org/politics/">Politics</a>
+	<a href="https://www.quirksmode.org/mobile/">Mobile</a>
+	<a href="https://www.quirksmode.org/about/">About</a>
+	<a href="https://www.quirksmode.org/coh/" title="Conference Organiser&#39;s Handbook">COH</a>
+	<a href="https://www.quirksmode.org/mobilewebhandbook/">Mobile Web<br>Handbook</a>
+</div>
+
+<a class="logoQuirksmode" href="https://www.quirksmode.org/" title="Home"><img src="./A tale of two viewports — part one_files/logo_quirksmode.gif" alt="QuirksMode"></a>
+
+<div class="extraInfo">
+	<img class="logoPPK" src="./A tale of two viewports — part one_files/logo_ppk.gif" alt="PPK">
+	<a href="https://www.quirksmode.org/sitemap.html">sitemap</a><a href="https://www.quirksmode.org/contact.html" class="rightExtraLink">contact</a>
+	<form action="http://www.google.com/search" method="get" title="Uses Google" id="mainSearch">
+		<input name="q" id="searchTop" value="Search QuirksMode.org">
+		<input type="submit" id="searchSubmit" value="Search">
+	</form>
+</div>
+
+
+
+<!--[if lte IE 6]>
+  <p class="ie6"><strong>IE6?</strong> Really? Isn&#8217;t it time to <a href="/upgrade.html">upgrade to a better browser</a>? 
+  (Unless you&#8217;re here for testing purposes, of course.)</p>
+<![endif]-->
+</div>
+
+<h2 id="top">A tale of two viewports — part one</h2>
+
+<div class="floater">
+<p>This page has been translated into <a href="http://www.beskrovnyy.com/verstka/skaz-o-dvux-vyuportax-chast-pervaya/" class="external">Russian</a>, <a href="http://weizhifeng.net/viewports.html" class="external">Chinese</a>, and <a href="http://codeflow.co.kr/question/756/%EB%91%90%EA%B0%9C%EC%9D%98-viewport-%EC%97%90-%EB%8C%80%ED%95%98%EC%97%AC-part-1-viewport-window-html-%EC%9D%98-%ED%81%AC%EA%B8%B0/" class="external">Korean</a>.</p>
+</div>
+
+<div id="header" style="top: 10px; left: 0px;"><div id="TOC"><div id="innertoc"><span id="contentheader">show page contents</span><div><a class="page" href="https://www.quirksmode.org/mobile/viewports.html#top">Top</a><a class="page" href="https://www.quirksmode.org/mobile/viewports.html#link1">Concept: device pixels and CSS pixels</a><a class="page indent" href="https://www.quirksmode.org/mobile/viewports.html#link2">100% zoom</a><a class="page" href="https://www.quirksmode.org/mobile/viewports.html#link3">Screen size</a><a class="page extraindent" href="https://www.quirksmode.org/mobile/viewports.html#link4">screen.width/height</a><a class="page" href="https://www.quirksmode.org/mobile/viewports.html#link5">Window size</a><a class="page extraindent" href="https://www.quirksmode.org/mobile/viewports.html#link6">window.innerWidth/Height</a><a class="page" href="https://www.quirksmode.org/mobile/viewports.html#link7">Scrolling offset</a><a class="page extraindent" href="https://www.quirksmode.org/mobile/viewports.html#link8">window.pageX/YOffset</a><a class="page" href="https://www.quirksmode.org/mobile/viewports.html#link9">Concept: the viewport</a><a class="page indent" href="https://www.quirksmode.org/mobile/viewports.html#link10">Consequences</a><a class="page indent" href="https://www.quirksmode.org/mobile/viewports.html#link11">document width?</a><a class="page" href="https://www.quirksmode.org/mobile/viewports.html#link12">Measuring the viewport</a><a class="page extraindent" href="https://www.quirksmode.org/mobile/viewports.html#link13">document. documentElement. clientWidth/Height</a><a class="page indent" href="https://www.quirksmode.org/mobile/viewports.html#link14">Two property pairs</a><a class="page" href="https://www.quirksmode.org/mobile/viewports.html#link15">Measuring the <code>&lt;html&gt;</code> element</a><a class="page extraindent" href="https://www.quirksmode.org/mobile/viewports.html#link16">document. documentElement. offsetWidth/Height</a><a class="page" href="https://www.quirksmode.org/mobile/viewports.html#link17">Event coordinates</a><a class="page extraindent" href="https://www.quirksmode.org/mobile/viewports.html#link18">pageX/Y, clientX/Y, screenX/Y</a><a class="page" href="https://www.quirksmode.org/mobile/viewports.html#link19">Media queries</a><a class="page extraindent" href="https://www.quirksmode.org/mobile/viewports.html#link20">Media queries</a><a class="page" href="https://www.quirksmode.org/mobile/viewports.html#link21">Conclusion</a></div></div></div>
+<div id="siteNav">
+	<!-- span id="menuLink">show site navigation</span -->
+	<p id="waitMessageNav">Loading site navigation; please wait...</p>
+</div></div>
+
+<p class="intro">In this mini-series I will explain how viewports and the widths
+of various important elements work, such as the <code>&lt;html&gt;</code> element, as well
+as the window and the screen.</p>
+
+<p>This page is about the desktop browsers, and its sole purpose is to set the stage for
+a similar discussion of the mobile browsers. Most web developers will already intuitively understand
+most desktop concepts. On mobile we’ll find the same concepts, but more complicated, and a
+prior discussion on terms everybody already knows will greatly help your understanding of the
+mobile browsers.</p>
+
+<h3 id="link1">Concept: device pixels and CSS pixels</h3>
+
+<p>The first concept you need to understand is CSS pixels, and the difference with device pixels.</p>
+
+<p>Device pixels are the kind of pixels we intuitively assume to be “right.”
+These pixels give the formal resolution of whichever device you’re
+working on, and can (in general) be read out from <code>screen.width/height</code>.</p>
+
+<p>If you give a certain element a <code>width: 128px</code>, and your monitor
+is 1024px wide, and you maximise your browser screen, the element would fit on your
+monitor eight times (roughly; let’s ignore the tricky bits for now).</p>
+
+<p>If the user zooms, however, this calculation is going to change. If the user zooms to 200%, your
+element with <code>width: 128px</code> will fit only four times on his 1024px wide monitor.</p>
+
+<p>Zooming as implemented in modern browsers consists of nothing more than “stretching
+up” pixels. That is, the width of the element is not changed from 128 to 256 pixels;
+instead the <em>actual pixels</em> are doubled in size. Formally, the element still has a width
+of 128 CSS pixels, even though it happens to take the space of 256 device pixels.</p>
+
+<p>In other words, zooming to 200% makes one CSS pixel grow to four times the size of one device pixels.
+(Two times the width, two times the height, yields four times in total).</p>
+
+<p>A few images will clarify the concept. Here are four pixels on 100% zoom level. Nothing
+much to see here; CSS pixels fully overlap with device pixels.</p>
+
+<img src="./A tale of two viewports — part one_files/csspixels_100.gif">
+
+<p>Now let’s zoom out. The CSS pixels start to shrink, meaning that one
+device pixel now overlaps several CSS pixels.</p>
+
+<img src="./A tale of two viewports — part one_files/csspixels_out.gif">
+
+<p>If you zoom in, the opposite happens. The CSS pixels start to grow, and now one CSS pixels
+overlaps several device pixels.</p>
+
+<img src="./A tale of two viewports — part one_files/csspixels_in.gif">
+
+<p>The point here is that <em>you are only interested in CSS pixels</em>. It’s
+those pixels that dictate how your style sheet is rendered.</p>
+
+<p>Device pixels are almost entirely useless to you. Not to the user; the user will zoom the page
+in or out until he can comfortably read it. However, that zooming level doesn’t matter to you.
+The browser will automatically make sure that your CSS layout is stretched up or squeezed in.</p>
+
+<h4 id="link2">100% zoom</h4>
+
+<p>I started the example by assuming a zoom level of 100%. It’s time to define that slightly
+more strictly:</p>
+
+<p class="accent">At zoom level 100% one CSS pixel is exactly equal to one device pixel.</p>
+
+<p>The concept of 100% zoom is very useful in the explanations that are going to follow, but
+you shouldn’t overly worry about it in your daily work. On desktop you will generally
+test your sites in 100% zoom, but even if the user zooms in or out the magic of CSS pixels will
+make sure that your layout retains the same ratios.</p>
+
+<h3 id="link3">Screen size</h3>
+
+<div class="floater">
+<h5 id="link4">screen.width/height</h5>
+<dl class="data">
+<dt>Meaning</dt><dd>Total size of the user’s screen.</dd>
+<dt>Measured in</dt><dd>Device pixels</dd>
+<dt>Browser errors</dt><dd>IE8 measures it in CSS pixels, in both IE7 and IE8 mode.</dd>
+</dl>
+</div>
+
+<p>Let’s take a look at some practical measurements. We’ll start with
+<code>screen.width</code> and <code>screen.height</code>.
+They contain the total width and height of the user’s screen. These dimensions are
+measured in device pixels because they never change: they’re a feature of the monitor,
+and not of the browser.</p>
+
+<img src="./A tale of two viewports — part one_files/desktop_screen.jpg">
+
+<p>Fun! But what do we do with this information?</p>
+
+<p>Basically, nothing. The user’s monitor size is unimportant to us — well, unless
+you want to measure it for use in a web statistics database.</p>
+
+<h3 id="link5">Window size</h3>
+
+<div class="floater">
+<h5 id="link6">window.innerWidth/Height</h5>
+<dl class="data">
+<dt>Meaning</dt><dd>Total size of the browser window, including scrollbars.</dd>
+<dt>Measured in</dt><dd>CSS pixels</dd>
+<dt>Browser errors</dt><dd>Not supported by IE.</dd>
+<dd>Opera measures it in device pixels.</dd>
+</dl>
+</div>
+
+<p>Instead, what you want to know is the inner dimensions of the browser window.
+That tells you exactly how much space the user currently has available for your CSS layout.
+You can find these dimensions in <code>window.innerWidth</code> and <code>window.innerHeight</code>.</p>
+
+<img src="./A tale of two viewports — part one_files/desktop_inner.jpg">
+
+<p>Obviously, the inner width of the window is measured in CSS pixels. You need to know how much
+of your layout you can squeeze into the browser window, and that amount decreases as the user
+zooms in. So if the user zooms in you get less available space in the window, and
+<code>window.innerWidth/Height</code> reflect that by decreasing.</p>
+
+<p class="smaller">(The exception here is Opera, where <code>window.innerWidth/Height</code>
+do not decrease when the user zooms in: they’re measured in device pixels. This is annoying
+on desktop, but fatal on mobile, as we’ll see later.)</p>
+
+<img src="./A tale of two viewports — part one_files/desktop_inner_zoomed.jpg">
+
+<p>Note that the measured widths and heights include the scrollbars. They, too, are considered
+part of the inner window. (This is mostly for historical reasons.)</p>
+
+<h3 id="link7">Scrolling offset</h3>
+
+<div class="floater">
+<h5 id="link8">window.pageX/YOffset</h5>
+<dl class="data">
+<dt>Meaning</dt><dd>Scrolling offset of the page.</dd>
+<dt>Measured in</dt><dd>CSS pixels</dd>
+<dt>Browser errors</dt><dd>None</dd>
+</dl>
+</div>
+
+<p><code>window.pageXOffset</code> and <code>window.pageYOffset</code>,
+contain the horizontal and vertical scrolling offsets of the document. Thus you can find out how
+much the user has scrolled.</p>
+
+<img src="./A tale of two viewports — part one_files/desktop_page.jpg">
+
+<p>These properties are measured in CSS pixels, too. You want to know how much of the document
+has already been scrolled up, whatever zoom state it’s in.</p>
+
+<p>In theory, if the user scrolls up and then zooms in, <code>window.pageX/YOffset</code> will
+change. However, the browsers try to keep web pages consistent by keeping the same element at
+the top of the visible page when the user zooms. That doesn’t always work perfectly, but
+it means that in practice <code>window.pageX/YOffset</code> doesn’t really change: the number
+of CSS pixels that have been scrolled out of the window remains (roughly) the same.</p>
+
+<img src="./A tale of two viewports — part one_files/desktop_page_zoomed.jpg">
+
+<h3 id="link9">Concept: the viewport</h3>
+
+<p>Before we continue with more JavaScript properties we have to introduce another concept:
+the viewport.</p>
+
+<p>The function of the viewport is to constrain the <code>&lt;html&gt;</code> element, which is the
+uppermost containing block of your site.</p>
+
+<p>That may sound a bit vague, so here’s a practical example. Suppose you have a liquid
+layout and one of your sidebars has <code>width: 10%</code>. Now the sidebar neatly grows and shrinks
+as you resize the browser window. But exactly how does that work?</p>
+
+<p>Technically, what happens is that the sidebar gets 10% of the width of its parent. Let’s
+say that’s the <code>&lt;body&gt;</code> (and that you haven’t given it a
+<code>width</code>). So the question becomes which width the <code>&lt;body&gt;</code> has.</p>
+
+<p>Normally, all block-level elements take 100% of the width of their parent (there are exceptions,
+but let’s ignore them for now). So the <code>&lt;body&gt;</code>
+is as wide as its parent, the <code>&lt;html&gt;</code> element.</p>
+
+<p>And how wide is the <code>&lt;html&gt;</code> element? Why, it’s as wide as the browser window.
+That’s why your sidebar with <code>width: 10%</code> will span 10% of the entire browser window.
+All web developers intuitively know and use this fact.</p>
+
+<p>What you may not know is how this works in theory. In theory, the width of the <code>&lt;html&gt;</code>
+element is restricted by the width of the viewport. The <code>&lt;html&gt;</code> element takes
+100% of the width of that viewport.</p>
+
+<p>The viewport, in turn, is exactly equal to the browser window: it’s been defined as such.
+The viewport is not an HTML construct, so you cannot influence it by CSS. It just has the width
+and height of the browser window — on desktop. On mobile it’s quite a bit more complicated.</p>
+
+<h4 id="link10">Consequences</h4>
+
+<p>This state of affairs has some curious consequences. You can see one of them right here on this
+site. Scroll all the way up to the top, and zoom in two or three steps so that the content of this
+site spills out of the browser window.</p>
+
+<p>Now scroll to the right, and you’ll see that the blue bar at the top of the site doesn’t
+line up properly any more.</p>
+
+<img src="./A tale of two viewports — part one_files/desktop_htmlbehaviour.jpg">
+
+<p>This behaviour is a consequence of how the viewport is defined. I gave the blue bar at the top
+a <code>width: 100%</code>. 100% of what? Of the <code>&lt;html&gt;</code> element, which is as wide
+as the viewport, which is as wide as the browser window.</p>
+
+<p>Point is: while this works fine at 100% zoom, now that we’ve zoomed in the viewport has
+become smaller than the total width of my site. In itself that doesn’t matter, the content
+now spills out of the <code>&lt;html&gt;</code> element, but that element has
+<code><a href="https://www.quirksmode.org/css/overflow.html">overflow</a>: visible</code>, which means that the spilled-out
+content will be shown in any case.</p>
+
+<p>But the blue bar doesn’t spill out. I gave it a <code>width: 100%</code>, after all, and
+the browsers obey by giving it the width of the viewport. They don’t care that that width
+is now too narrow.</p>
+
+<img src="./A tale of two viewports — part one_files/desktop_100percent.jpg">
+
+<h4 id="link11">document width?</h4>
+
+<p>What I really need to know is how wide the total content of the page is, including the
+bits that “stick out.” As far as I know it’s not possible to find that
+value (well, unless you calculate the individual widths and margins of all elements on
+the page, but that’s error-prone, to put it mildly).</p>
+
+<p>I am starting to believe that we need a JavaScript property pair that gives what
+I’ll call the “document width” (in CSS pixels, obviously).</p>
+
+<img src="./A tale of two viewports — part one_files/desktop_documentwidth.jpg">
+
+<p>And if we’re really feeling funky, why not also expose this value to CSS? I’d
+love to be able to make the <code>width: 100%</code> of my blue bar dependent on the
+document width, and not the <code>&lt;html&gt;</code> element’s width. (This is bound to
+be tricky, though, and I wouldn’t be surprised if it’s impossible to implement.)</p>
+
+<p>Browser vendors, what do you think?</p>
+
+<h3 id="link12">Measuring the viewport</h3>
+
+<div class="floater">
+<h5 id="link13">document. documentElement. clientWidth/Height</h5>
+<dl class="data">
+<dt>Meaning</dt><dd>Viewport dimensions</dd>
+<dt>Measured in</dt><dd>CSS pixels</dd>
+<dt>Browser errors</dt><dd>None</dd>
+</dl>
+</div>
+
+<p>You might want to know the dimensions of the viewport.
+They can be found in <code>document.documentElement.clientWidth</code>
+and <code>-Height</code>.</p>
+
+<img src="./A tale of two viewports — part one_files/desktop_client.jpg">
+
+<p>If you know your DOM, you know that <code>document.documentElement</code> is in fact the
+<code>&lt;html&gt;</code> element: the root element of any HTML document. However, the viewport is
+one level higher, so to speak; it’s the element that contains the <code>&lt;html&gt;</code>
+element. That might matter if you give the <code>&lt;html&gt;</code> element a <code>width</code>.
+(I don’t recommend that, by the way, but it’s possible.)</p>
+
+<p>In that situation <code>document.documentElement.clientWidth</code>
+and <code>-Height</code> still gives the dimensions of the viewport, and not of the <code>&lt;html&gt;</code>
+element. (This is a special rule that goes <em>only</em> for this element <em>only</em> for this property
+pair. In all other cases the actual width of the element is used.)</p>
+
+<img src="./A tale of two viewports — part one_files/desktop_client_smallpage.jpg">
+
+<p>So <code>document.documentElement.clientWidth</code> and <code>-Height</code> always gives
+the viewport dimensions, regardless of the dimensions of the <code>&lt;html&gt;</code> element.</p>
+
+<h4 id="link14">Two property pairs</h4>
+
+<p>But aren’t the dimensions of the viewport width also given by <code>window.innerWidth/Height</code>?
+Well, yes and no.</p>
+
+<p>There’s a formal difference between the two property pairs: <code>document.documentElement.clientWidth</code>
+and <code>-Height</code> doesn’t include the scrollbar, while <code>window.innerWidth/Height</code>
+does. That’s mostly a nitpick, though.</p>
+
+<p>The fact that we have two property pairs is a holdover from the Browser Wars.
+Back then Netscape only supported
+<code>window.innerWidth/Height</code> and IE only <code>document.documentElement.clientWidth</code>
+and <code>-Height</code>. Since then all other browsers started to support <code>clientWidth/Height</code>,
+but IE didn’t pick up <code>window.innerWidth/Height</code>.</p>
+
+<p>Having two property pairs available is a minor nuisance on desktop — but it
+turns out to be a blessing on mobile, as we’ll see.</p>
+
+<h3 id="link15">Measuring the <code>&lt;html&gt;</code> element</h3>
+
+<div class="floater">
+<h5 id="link16">document. documentElement. offsetWidth/Height</h5>
+<dl class="data">
+<dt>Meaning</dt><dd>Dimensions of the <code>&lt;html&gt;</code> element (and thus of the page).</dd>
+<dt>Measured in</dt><dd>CSS pixels</dd>
+<dt>Browser errors</dt><dd>IE measures the viewport, and not the <code>&lt;html&gt;</code>
+element.</dd>
+</dl>
+</div>
+
+<p>So <code>clientWidth/Height</code> gives the viewport dimensions in all cases. But where can we find
+the dimensions of the <code>&lt;html&gt;</code> element itself? They’re stored in
+<code>document.documentElement.offsetWidth</code> and <code>-Height</code>.</p>
+
+<img src="./A tale of two viewports — part one_files/desktop_offset.jpg">
+
+<p>These properties truly give you access to the <code>&lt;html&gt;</code> element as a block-level
+element; if you set a <code>width</code>, <code>offsetWidth</code> will reflect it.</p>
+
+<img src="./A tale of two viewports — part one_files/desktop_offset_smallpage.jpg">
+
+<h3 id="link17">Event coordinates</h3>
+
+<div class="floater">
+<h5 id="link18">pageX/Y, clientX/Y, screenX/Y</h5>
+<dl class="data">
+<dt>Meaning</dt><dd>see main text</dd>
+<dt>Measured in</dt><dd>see main text</dd>
+<dt>Browser errors</dt><dd>IE doesn’t support pageX/Y.</dd>
+<dd>IE and Opera calculate screenX/Y in CSS pixels.</dd>
+</dl>
+</div>
+
+<p>Then there are the event coordinates. When a mouse event occurs, no less than five property pairs
+are exposed to give you information about the exact place of the event. For our discussion
+three of them are important:</p>
+
+<ol>
+	<li><code>pageX/Y</code> gives the coordinates relative to the <code>&lt;html&gt;</code>
+	element in CSS pixels.</li>
+	<li><code>clientX/Y</code> gives the coordinates relative to the viewport in CSS pixels.</li>
+	<li><code>screenX/Y</code> gives the coordinates relative to the screen in device pixels.</li>
+</ol>
+
+<script>
+
+function init() {
+	var root  = $('coordinates');
+	var links = root.getElementsByTagName('a');
+	var images = root.getElementsByTagName('img');
+	for (var i=0;i<links.length;i+=1) {
+		setLink(i);
+	}
+
+	var removeOld = function () {};
+	links[0].onclick();
+
+	function setLink(nr) {
+		var link = links[nr];
+		var img = images[nr];
+		img.style.display = 'none';
+		link.onclick = function () {
+			removeOld();
+			img.style.display = 'block';
+			this.className += ' active';
+			var that = this;
+			removeOld = function () {
+				img.style.display = 'none';
+				that.className = 'page';
+			}
+			return false;
+		}
+	}
+}
+
+</script>
+<style>
+a.active {
+	font-weight: bold;
+	opacity: 1 !important;
+}
+</style>
+
+<div id="coordinates">
+	<p>
+	<a href="https://www.quirksmode.org/mobile/viewports.html#" class="page active">pageX/Y</a>
+	<a href="https://www.quirksmode.org/mobile/viewports.html#" class="page">clientX/Y</a>
+	<a href="https://www.quirksmode.org/mobile/viewports.html#" class="page">screenX/Y</a>
+	</p>
+
+	<img src="./A tale of two viewports — part one_files/desktop_pageXY.jpg" style="display: block;">
+	<img src="./A tale of two viewports — part one_files/desktop_clientXY.jpg" style="display: none;">
+	<img src="./A tale of two viewports — part one_files/desktop_screenXY.jpg" style="display: none;">
+
+</div>
+
+<p>You’ll use <code>pageX/Y</code> 90% of the time; usually you want to know the
+event position relative to the document. The other 10% of the time you’ll use
+<code>clientX/Y</code>. You never ever need to know the event coordinates relative to
+the screen.</p>
+
+<h3 id="link19">Media queries</h3>
+
+<div class="floater">
+<h5 id="link20">Media queries</h5>
+<dl class="data">
+<dt>Meaning</dt><dd>see main text</dd>
+<dt>Measured in</dt><dd>see main text</dd>
+<dt>Browser errors</dt><dd>IE doesn’t support them.</dd>
+<dd>For <code>device-width/height</code> Firefox uses the values <code>screen.width/height</code>
+would have if they are measured in CSS pixels.</dd>
+<dd>For <code>width/height</code> Safari and Chrome use the values <code>documentElement .clientWidth/Height</code>
+would have if they are measured in device pixels.</dd>
+</dl>
+</div>
+
+<p>Finally, some words about media queries. The idea
+is very simple: you can define special CSS rules that are executed only if the width
+of the page is larger than, equal to, or smaller than a certain size. For instance:</p>
+
+<pre style="margin-right: -1222px;">div.sidebar {
+	width: 300px;
+}
+
+@media all and (max-width: 400px) {
+	// styles assigned when width is smaller than 400px;
+	div.sidebar {
+		width: 100px;
+	}
+
+}
+</pre>
+
+<p>Now the sidebar is 300px wide, except when the width is smaller than 400px, in which
+case the sidebar becomes 100px wide.</p>
+
+<p>The question is of course: which width are we measuring here?</p>
+
+<p>There are two relevant media queries: <code>width/height</code> and <code>device-width/device-height</code>.</p>
+
+<ol>
+	<li><code>width/height</code> uses the same values as
+	<code>documentElement .clientWidth/Height</code> (the viewport, in other words). It works
+	with CSS pixels.</li>
+	<li><code>device-width/device-height</code> uses the same values as <code>screen.width/height</code>
+	(the screen, in other words). It works with device pixels.</li>
+</ol>
+
+<img src="./A tale of two viewports — part one_files/desktop_mediaqueries.jpg">
+
+<p>Which should you use? That’s a no-brainer: <code>width</code>, of course.
+Web developers are not interested in the device width; it’s the width of the browser
+window that counts.</p>
+
+<p>So use <code>width</code> and forget <code>device-width</code> — on desktop. As we’ll
+see, the situation is much more messy on mobile.</p>
+
+<h3 id="link21">Conclusion</h3>
+
+<p>That concludes our foray into the desktop browsers’ behaviour. The <a href="https://www.quirksmode.org/mobile/viewports2.html">second part of this
+series</a> ports these concepts to mobile and highlights some important
+differences with the desktop.</p>
+
+<div id="footer">
+<div class="sponsors">
+<p>If you like this page, why not <a href="https://www.quirksmode.org/donations.html">donate a little bit of money</a> to help me pay my bills and create more free content? Donating a lot of money is also allowed, BTW.</p>
+</div>
+
+<a href="https://www.quirksmode.org/index.html">Home</a>
+<a href="https://www.quirksmode.org/contact.html">Contact</a>
+<a href="https://www.quirksmode.org/donations.html">Donations</a>
+</div>
+
+
+
+</body><div style="all: initial;"><div id="__hcfy__" style="all: initial;"></div></div><div style="pointer-events: none; visibility: hidden; position: absolute;"></div></html>

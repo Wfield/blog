@@ -1,0 +1,65 @@
+## 概念
+### Observable
+- 可观察/消费的对象，它的作用是**生产并推送**值给观察/消费者
+- Observable 产生值是惰性的，即当被订阅时才产生值
+- Observable 推送值是主动的，一个 Observable 实例在被创建时就已经决定了采取何种方式推送值（具体由 Schedulers 实现）
+- 一般情况下（没有指定调度方式）推送是同步的，即产生值后（被订阅 subscribe ）就立即推送
+- 有三种推送值的方式：
+  - next：发送一个值，比如数字、字符串、对象，等等
+  - error：发送一个 JavaScript 错误 或 异常
+  - complete：不再发送任何值
+  
+  
+### Observer
+- 观察 ~~/消费者~~，接收 Observable 产生的值
+- 观察者只是一组回调函数的集合，每个回调函数对应一种 Observable 发送的通知类型
+- 要使用观察者，需要把它提供给 Observable 的 subscribe 方法 `observable.subscribe(observer)`
+
+### Subscription
+- 订阅，Observable 通过 subscribe 方法被 observer 订阅
+
+### Subject
+- Subject 是一种特殊类型的 Observable，它允许将值多播给多个观察者
+- 普通的 Observables 是单播的，每个已订阅的观察者都拥有 Observable 的独立执行
+- 每个 Subject 都是 Observable，每个 Subject 都是观察者
+```
+var subject = new Rx.Subject();
+
+// subscribe 是 Observable 的方法
+subject.subscribe({
+  next: (v) => console.log('observerA: ' + v)
+});
+subject.subscribe({
+  next: (v) => console.log('observerB: ' + v)
+});
+
+// next 是 observer 的方法
+subject.next(1);
+subject.next(2);
+```
+
+### Operators
+- Observable 的方法，分为实例操作符和静态操作符
+- Operators 接收一个 Observable，返回一个新 Observable，不改变原来的 Observable
+- Operators 的作用是添加数据操作逻辑，在 subscribe 订阅链添加一层订阅
+
+
+### Scheduler
+- 决定何时，在什么样的执行上下文中发送通知给观察者
+- 例如 `Rx.Scheduler.async` 可以使通知异步执行
+
+
+### Observable.create() 例子
+```
+var foo = Rx.Observable.create(function (observer) {
+  console.log('Hello');
+  observer.next(42);
+});
+
+foo.subscribe(function (x) {
+  console.log(x);
+});
+```
+create 的回调函数可以被认为是一种订阅，回调函数的参数是 observer 并通过 next 方法推送消息  
+next 方法将值传递给下一个订阅，即显式的 subscribe 订阅
+next、error、complete 通知将值沿着订阅链传递

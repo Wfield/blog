@@ -19,26 +19,27 @@
 WebGL在GPU上的工作基本上分为两部分，第一部分是将顶点（或数据流）转换到裁剪空间坐标， 第二部分是基于第一部分的结果绘制像素点
 
 
-数据被塞入 gl.ARRAY_BUFFER 中，并绑定到相应的 buffer
-buffer 中的数据被紧接着（代码顺序上）的 atrrbute 消费
+数据被塞入 gl.ARRAY_BUFFER 中，并绑定到相应的 buffer  
+buffer 中的数据被紧接着（代码顺序上）的 atrrbute 消费  
 
 
-缓冲操作是在GPU上获取顶点和其他顶点数据的一种方式
-gl.createBuffer： 创建一个缓冲
-gl.bindBuffer：设置缓冲为当前使用缓冲
-// 这个命令是将缓冲绑定到 ARRAY_BUFFER 绑定点，它是WebGL内部的一个全局变量
-gl.bindBuffer(gl.ARRAY_BUFFER, someBuffer);
-gl.butterDate: 将数据拷贝到缓冲
+缓冲操作是在GPU上获取顶点和其他顶点数据的一种方式  
+gl.createBuffer： 创建一个缓冲  
+gl.bindBuffer：设置缓冲为当前使用缓冲  
+// 这个命令是将缓冲绑定到 ARRAY_BUFFER 绑定点，它是WebGL内部的一个全局变量  
+gl.bindBuffer(gl.ARRAY_BUFFER, someBuffer);  
+gl.butterDate: 将数据拷贝到缓冲  
 
 
-这个命令是告诉WebGL我们想从缓冲中提供数据
-gl.enableVertexAttribArray(location);
+这个命令是告诉WebGL我们想从缓冲中提供数据  
+gl.enableVertexAttribArray(location);  
 
 
-处理变量
+### 处理变量  
 1. 找到变量的内存位置
 var positionAttributeLocation = gl.getAttribLocation(program, 'a_position');
 2. 为变量填充数据
+```
 // 创建缓存，并指定使用缓存类型
 var positionBuffer = gl.createBuffer();
 gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
@@ -49,7 +50,9 @@ var positions = [
     0.7, 0,
   ];
 gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
+```
 3. 说明如何使用数据
+```
 // 启用变量
 gl.enableVertexAttribArray(positionAttributeLocation);
 
@@ -60,12 +63,13 @@ gl.enableVertexAttribArray(positionAttributeLocation);
  var stride = 0;         // 0 = 移动单位数量 * 每个单位占用内存（sizeof(type)）, 每次迭代运行运动多少内存到下一个数据开始点
  var offset = 0;         // 从缓冲起始位置开始读取
  gl.vertexAttribPointer(positionAttributeLocation, size, type, normalize, stride, offset);
+```
 4. 变量 a_position 设置完成
 
 
 
 
-全局变量
+### 全局变量
 gl.uniformXXX (xxx 表示数据维度和类型)
   var translation = [0, 0];
   var color = [Math.random(), Math.random(), Math.random(), 1];
@@ -78,12 +82,12 @@ gl.uniformXXX (xxx 表示数据维度和类型)
 
   gl.uniform2fv(translationLocation, translation);
 
-旋转
+#### 旋转
 坐标 * 单位圆上的点的坐标
 单位圆上的点的坐标，用角度表示：x = sin(a)，y = cos(a)
 
 
-矩形
+#### 矩形
 由两个三角组成，所以数据
 	-50, 50,
   50, 50,
@@ -94,52 +98,52 @@ gl.uniformXXX (xxx 表示数据维度和类型)
 是六个坐标数据（两个三角形有 6个角）
 
 
-图元
+#### 图元
 gl 渲染的基础是图元，通过图元的拼接组成图形。因此 position 的数据是用了渲染各个图元的点。
 
 
-为什么三维坐标需要四个维度？
-三维坐标 x, y, z 用 （x, y, z, w）表示，其中 w 被称作齐次坐标。
-在透示投影时需要使用。
-坐标系的 scale 和 rotate 可以使用 mat3 的变换来实现，但坐标的平移不可以。因为前者的根坐标（0，0，0）是不变的，而后者需要改变根坐标的位置。
+### 为什么三维坐标需要四个维度？
+三维坐标 x, y, z 用 （x, y, z, w）表示，其中 w 被称作齐次坐标。  
+在透示投影时需要使用。   
+坐标系的 scale 和 rotate 可以使用 mat3 的变换来实现，但坐标的平移不可以。因为前者的根坐标（0，0，0）是不变的，而后者需要改变根坐标的位置。   
 
-使用 mat3 也可以计算平移：
+使用 mat3 也可以计算平移：  
 
-但为了使用矩阵特性，即矩阵乘法有结合性：
+但为了使用矩阵特性，即矩阵乘法有结合性：  
 
-可以先计算 ，然后施于大量点或矢量
+可以先计算 ，然后施于大量点或矢量. 
 
-所以使用四维（x, y, z, w） 来表示三维坐标，其中 w 可以表示平移量？
+所以使用四维（x, y, z, w） 来表示三维坐标，其中 w 可以表示平移量？  
 
-对于坐标的变换可以理解为如下矩阵的变换
-WVP = World * View * Projection
-然后 World = Scale * Rotation * Translation
-所以 WVP = Scale * Rotation * Translation * View * Projection，其中每一个都是 4X4
+### 对于坐标的变换可以理解为如下矩阵的变换. 
+WVP = World * View * Projection. 
+然后 World = Scale * Rotation * Translation. 
+所以 WVP = Scale * Rotation * Translation * View * Projection，其中每一个都是 4X4. 
 
 
 即 gl_Position = wvp * a_position;
 
-world：世界矩阵
-view：视图矩阵
-projection：投影矩阵
+- world：世界矩阵
+- view：视图矩阵
+- projection：投影矩阵
 
 
 
-视图矩阵
-用于确定相机角度和位置的矩阵
+## 视图矩阵
+用于确定相机角度和位置的矩阵  
 
-Matrix4.setLookAt(eyeX, eyeY, eyeZ, atX, atY, atZ, upX, upY, upZ)
-var viewMatrix = new Matrix4();
-viewMatrix.setLookAt(3,3,7,0,0,0,0,1,0);
+Matrix4.setLookAt(eyeX, eyeY, eyeZ, atX, atY, atZ, upX, upY, upZ). 
+var viewMatrix = new Matrix4();  
+viewMatrix.setLookAt(3,3,7,0,0,0,0,1,0);  
 
-modelView
-即对相机的位置做一些变换的矩阵
+### modelView
+即对相机的位置做一些变换的矩阵. 
 In OpenGL 1.1, a transform that combines the modeling transform with the viewing transform. That is, it is the composition of the transformation from object coordinates to world coordinates and the transformation from world coordinates to eye coordinates. Because of the equivalence between modeling and viewing transformations, world coordinates are not really meaningful for OpenGL, and only the combined transformation is tracked.
 
 
-投影矩阵
+### 投影矩阵
 
-所有的透视矩阵的输入都是以下几个参数：
+所有的透视矩阵的输入都是以下几个参数： 
 ● fov：垂直视角，即可是空间和底面间的夹角；
 ● aspect：近裁切面的宽高比；
 ● near: 近裁切面位置
@@ -151,12 +155,12 @@ In OpenGL 1.1, a transform that combines the modeling transform with the viewing
 
 
 
-方向光源
-将方向光的方向和面的朝向点乘就可以得到两个方向的余弦值。
-将三维物体的朝向和光的方向点乘， 结果为 1 则物体朝向和光照方向相同，为 -1 则物体朝向和光照方向相反
+## 方向光源
+将方向光的方向和面的朝向点乘就可以得到两个方向的余弦值。  
+将三维物体的朝向和光的方向点乘， 结果为 1 则物体朝向和光照方向相同，为 -1 则物体朝向和光照方向相反. 
 
-三维物体的朝向
-面的法向量
+#### 三维物体的朝向
+面的法向量  
 
 1. 在顶点着色器中声明法向量：varying vec3 a_normal;
 2. 在片段着色器中
@@ -165,7 +169,7 @@ In OpenGL 1.1, a transform that combines the modeling transform with the viewing
   c. 将颜色部分（不包括 alpha）和 光照相乘：gl_FragColor.rgb *= light;
 3. 在 glsl 中为变量赋值
 
-如何求法向量
+### 如何求法向量
 法向量初始应该是一个固定的值。在物体旋转的过程中需要重置法向量，方法是法向量和世界矩阵相乘。
 如果世界矩阵被缩放，使用世界矩阵的转置矩阵与法向量相乘。
 
